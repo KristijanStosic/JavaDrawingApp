@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -44,9 +43,8 @@ import modifyDlg.DlgLineModify;
 import modifyDlg.DlgPointModify;
 import modifyDlg.DlgRectangleModify;
 
-
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame {
@@ -81,7 +79,6 @@ public class FrmDrawing extends JFrame {
 	 * Create the frame.
 	 */
 	public FrmDrawing() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmDrawing.class.getResource("/images/paint.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1120, 650);
 		setTitle("IT79-2018 Stosic Kristijan");
@@ -207,7 +204,9 @@ public class FrmDrawing extends JFrame {
 		btnGroupMode.add(rdbtnDraw);
 		
 		
-		JButton btnChooselnnerColor = new JButton("Choose color");
+		JButton btnChooselnnerColor = new JButton("InnerColor");
+		btnChooselnnerColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
+		btnChooselnnerColor.setToolTipText("Inner Color");
 		btnChooselnnerColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				innerColor=JColorChooser.showDialog(null, "FILL COLOR", innerColor);
@@ -245,7 +244,9 @@ public class FrmDrawing extends JFrame {
 		);
 		panelInnerColor.setLayout(gl_panelInnerColor);
 		
-		JButton btnChooseEdgeColor = new JButton("Choose color");
+		JButton btnChooseEdgeColor = new JButton("EdgeColor");
+		btnChooseEdgeColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
+		btnChooseEdgeColor.setToolTipText("ChooseEdgeColor");
 		btnChooseEdgeColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				edgeColor=JColorChooser.showDialog(null, "BACKGROUND COLOR", edgeColor);
@@ -285,9 +286,9 @@ public class FrmDrawing extends JFrame {
 		);
 		panelEdgeColor.setLayout(gl_panelEdgeColor);
 		
-		JButton btnModify = new JButton("Modify");
-		btnModify.setToolTipText("Modify");
+		JButton btnModify = new JButton("");
 		btnModify.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/pencil.png")));
+		btnModify.setToolTipText("Modify");
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lastSelected == -1){
@@ -322,9 +323,10 @@ public class FrmDrawing extends JFrame {
 		});
 		btnModify.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JButton btnDelete = new JButton("");
 		btnDelete.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/delete.png")));
+		btnDelete.setToolTipText("Delete");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lastSelected==-1){
@@ -341,7 +343,9 @@ public class FrmDrawing extends JFrame {
 			}
 		});
 		
-		JButton btnDeleteAll = new JButton("Delete all");
+		JButton btnDeleteAll = new JButton("");
+		btnDeleteAll.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/deleteAll.png")));
+		btnDeleteAll.setToolTipText("Delete all");
 		btnDeleteAll.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnDeleteAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -370,39 +374,41 @@ public class FrmDrawing extends JFrame {
 		);
 		gl_panelActions.setVerticalGroup(
 			gl_panelActions.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelActions.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelActions.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnModify)
-						.addComponent(btnDelete)
-						.addComponent(btnDeleteAll))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				.addComponent(btnModify, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+				.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+				.addComponent(btnDeleteAll, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
 		);
 		panelActions.setLayout(gl_panelActions);
 		
 		JToggleButton tglbtnPoint = new JToggleButton("");
-		tglbtnPoint.setToolTipText("Point");
 		tglbtnPoint.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/cross-shaped-target.png")));
+		tglbtnPoint.setToolTipText("Point");
 		tglbtnPoint.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JToggleButton tglbtnRectangle = new JToggleButton("Rectangle");
+		JToggleButton tglbtnRectangle = new JToggleButton("");
+		tglbtnRectangle.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/rectangle.png")));
+		tglbtnRectangle.setToolTipText("Rectangle");
 		tglbtnRectangle.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JToggleButton tglbtnCircle = new JToggleButton("Circle");
+		JToggleButton tglbtnCircle = new JToggleButton("");
+		tglbtnCircle.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/clean.png")));
+		tglbtnCircle.setToolTipText("Circle");
 		tglbtnCircle.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JToggleButton tglbtnDonut = new JToggleButton("Donut");
+		JToggleButton tglbtnDonut = new JToggleButton("");
+		tglbtnDonut.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/rec (1).png")));
+		tglbtnDonut.setToolTipText("Donut");
 		tglbtnDonut.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JToggleButton tglbtnLine = new JToggleButton("");
+		tglbtnLine.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/line.png")));
 		tglbtnLine.setToolTipText("Line");
-		tglbtnLine.setIcon(new ImageIcon(FrmDrawing.class.getResource(("/images/line.png"))));
 		tglbtnLine.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnGroupShapes.add(tglbtnLine);
 		GroupLayout gl_panelShapes = new GroupLayout(panelShapes);
 		gl_panelShapes.setHorizontalGroup(
-			gl_panelShapes.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panelShapes.createSequentialGroup()
+			gl_panelShapes.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelShapes.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -410,21 +416,21 @@ public class FrmDrawing extends JFrame {
 					.addGap(18)
 					.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(tglbtnCircle, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addComponent(tglbtnCircle, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(tglbtnDonut, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(21, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_panelShapes.setVerticalGroup(
 			gl_panelShapes.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelShapes.createSequentialGroup()
-					.addGroup(gl_panelShapes.createParallelGroup(Alignment.TRAILING)
-						.addComponent(tglbtnDonut, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_panelShapes.createParallelGroup(Alignment.BASELINE)
-							.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-							.addComponent(tglbtnLine, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-							.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
-							.addComponent(tglbtnCircle, GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)))
+					.addGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING)
+						.addComponent(tglbtnDonut, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+						.addGroup(gl_panelShapes.createParallelGroup(Alignment.BASELINE)
+							.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+							.addComponent(tglbtnLine, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+							.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+							.addComponent(tglbtnCircle, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)))
 					.addGap(268))
 		);
 		panelShapes.setLayout(gl_panelShapes);
@@ -503,7 +509,7 @@ public class FrmDrawing extends JFrame {
 						}
 					}
 				}
-				pnlDrawing.repaint();
+				   pnlDrawing.repaint();
 			}
 		});	
 	}
