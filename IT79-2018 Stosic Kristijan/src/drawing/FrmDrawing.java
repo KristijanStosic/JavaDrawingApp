@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -43,8 +44,9 @@ import modifyDlg.DlgLineModify;
 import modifyDlg.DlgPointModify;
 import modifyDlg.DlgRectangleModify;
 
+
 import javax.swing.JTextField;
-import javax.swing.JMenuBar;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame {
@@ -79,6 +81,7 @@ public class FrmDrawing extends JFrame {
 	 * Create the frame.
 	 */
 	public FrmDrawing() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FrmDrawing.class.getResource("/images/paint.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1120, 650);
 		setTitle("IT79-2018 Stosic Kristijan");
@@ -283,6 +286,8 @@ public class FrmDrawing extends JFrame {
 		panelEdgeColor.setLayout(gl_panelEdgeColor);
 		
 		JButton btnModify = new JButton("Modify");
+		btnModify.setToolTipText("Modify");
+		btnModify.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/pencil.png")));
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lastSelected == -1){
@@ -319,6 +324,7 @@ public class FrmDrawing extends JFrame {
 		
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnDelete.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/delete.png")));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(lastSelected==-1){
@@ -374,7 +380,9 @@ public class FrmDrawing extends JFrame {
 		);
 		panelActions.setLayout(gl_panelActions);
 		
-		JToggleButton tglbtnPoint = new JToggleButton("Point");
+		JToggleButton tglbtnPoint = new JToggleButton("");
+		tglbtnPoint.setToolTipText("Point");
+		tglbtnPoint.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/cross-shaped-target.png")));
 		tglbtnPoint.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JToggleButton tglbtnRectangle = new JToggleButton("Rectangle");
@@ -386,7 +394,9 @@ public class FrmDrawing extends JFrame {
 		JToggleButton tglbtnDonut = new JToggleButton("Donut");
 		tglbtnDonut.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
-		JToggleButton tglbtnLine = new JToggleButton("Line");
+		JToggleButton tglbtnLine = new JToggleButton("");
+		tglbtnLine.setToolTipText("Line");
+		tglbtnLine.setIcon(new ImageIcon(FrmDrawing.class.getResource(("/images/line.png"))));
 		tglbtnLine.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btnGroupShapes.add(tglbtnLine);
 		GroupLayout gl_panelShapes = new GroupLayout(panelShapes);
