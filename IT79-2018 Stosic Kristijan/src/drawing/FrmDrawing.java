@@ -11,6 +11,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -45,6 +46,7 @@ import modifyDlg.DlgRectangleModify;
 
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame {
@@ -118,48 +120,53 @@ public class FrmDrawing extends JFrame {
 				new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
 						new BevelBorder(BevelBorder.LOWERED, null, null, null, null)),
 				"Mode", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
+		
+		JLabel lblMouseCursor = new JLabel("Mouse Position: ");
+		lblMouseCursor.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblMouseCursor.setForeground(Color.WHITE);
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-				gl_contentPane.createParallelGroup(Alignment.TRAILING).addGroup(gl_contentPane.createSequentialGroup()
-						.addContainerGap().addGroup(gl_contentPane
-								.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(panelShapes, GroupLayout.PREFERRED_SIZE, 583,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED,
-												38, Short.MAX_VALUE)
-										.addComponent(panelActions, GroupLayout.PREFERRED_SIZE, 463,
-												GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_contentPane.createSequentialGroup().addGap(8)
-										.addComponent(pnlDrawing, GroupLayout.PREFERRED_SIZE, 827,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup().addGap(4).addComponent(
-														panelInnerColor, GroupLayout.DEFAULT_SIZE, 235,
-														Short.MAX_VALUE))
-												.addComponent(panelEdgeColor, Alignment.TRAILING,
-														GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-												.addComponent(panelMode, GroupLayout.DEFAULT_SIZE, 239,
-														Short.MAX_VALUE))))
-						.addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane
-				.createSequentialGroup().addContainerGap()
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(panelShapes, GroupLayout.PREFERRED_SIZE, 583, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+							.addComponent(panelActions, GroupLayout.PREFERRED_SIZE, 463, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(8)
+							.addComponent(pnlDrawing, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addGap(4)
+									.addComponent(panelInnerColor, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
+								.addComponent(panelEdgeColor, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+								.addComponent(panelMode, GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+								.addComponent(lblMouseCursor))))
+					.addContainerGap())
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(panelActions, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 						.addComponent(panelShapes, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
-				.addGap(18)
-				.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
-								.addComponent(panelEdgeColor, GroupLayout.PREFERRED_SIZE, 162,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(22)
-								.addComponent(panelInnerColor, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-								.addGap(18)
-								.addComponent(panelMode, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
-						.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
-				.addContainerGap()));
+							.addComponent(panelEdgeColor, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
+							.addGap(22)
+							.addComponent(panelInnerColor, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+							.addGap(18)
+							.addComponent(panelMode, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+						.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblMouseCursor, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+		);
 		GroupLayout gl_pnlDrawing = new GroupLayout(pnlDrawing);
 		gl_pnlDrawing.setHorizontalGroup(
 				gl_pnlDrawing.createParallelGroup(Alignment.LEADING).addGap(0, 10, Short.MAX_VALUE));
@@ -329,7 +336,7 @@ public class FrmDrawing extends JFrame {
 				}
 				int question = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this shape?",
 						"CONFIRM", JOptionPane.YES_NO_OPTION);
-				if (question == 0 & pnlDrawing.getShapes().size() > lastSelected) {
+				if (question == 0 && pnlDrawing.getShapes().size() > lastSelected) {
 					pnlDrawing.getShapes().remove(lastSelected);
 					pnlDrawing.repaint();
 					lastSelected = -1;
@@ -440,6 +447,12 @@ public class FrmDrawing extends JFrame {
 
 		rdbtnDraw.setSelected(true);
 
+		pnlDrawing.addMouseMotionListener(new MouseMotionAdapter() {
+			public void mouseMoved(MouseEvent e) {
+				lblMouseCursor.setText("Mouse position: " + Integer.toString(e.getX()) + ", " + Integer.toString(e.getY()));
+			}
+		});
+		
 		pnlDrawing.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
