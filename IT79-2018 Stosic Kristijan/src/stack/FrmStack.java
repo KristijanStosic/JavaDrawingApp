@@ -74,7 +74,7 @@ public class FrmStack extends JFrame {
 						int y = Integer.parseInt(addToStack.getTxtCoordinateY().getText());
 						int width = Integer.parseInt(addToStack.getTxtWidth().getText());
 						int height = Integer.parseInt(addToStack.getTxtHeight().getText());
-						if(x<1 || y<1 || width<1 || height <1){
+						if(width<1 || height <1){
 							getToolkit().beep();
 							JOptionPane.showOptionDialog(null, "Insert positive values!", "Error", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, option, option[0]);
 							return;
