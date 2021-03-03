@@ -29,7 +29,7 @@ import javax.swing.JLabel;
 public class FrmSort extends JFrame {
 
 	private JPanel contentPane;
-	private static DefaultListModel<Rectangle> dlm = new DefaultListModel<Rectangle>();
+	private  DefaultListModel<Rectangle> dlm = new DefaultListModel<Rectangle>();
 	private ArrayList<Rectangle> listRectangles=new ArrayList<Rectangle>();
 	
 	/**

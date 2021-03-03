@@ -263,7 +263,7 @@ public class FrmDrawing extends JFrame {
 
 		txtEdgeColor = new JTextField();
 		txtEdgeColor.setEditable(false);
-		txtEdgeColor.setBackground(new Color(0, 0, 0));
+		txtEdgeColor.setBackground(Color.RED);
 		txtEdgeColor.setColumns(10);
 		GroupLayout gl_panelEdgeColor = new GroupLayout(panelEdgeColor);
 		gl_panelEdgeColor.setHorizontalGroup(gl_panelEdgeColor.createParallelGroup(Alignment.LEADING)

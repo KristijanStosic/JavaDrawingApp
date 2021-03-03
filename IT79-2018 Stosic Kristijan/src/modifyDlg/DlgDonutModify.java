@@ -230,12 +230,13 @@ public class DlgDonutModify extends JDialog {
 							
 							donut.setCenter(new Point(x,y));
 							
-								try {
-									donut.setRadius(outerRadius);
-								} catch (Exception e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}
+							
+									try {
+										donut.setRadius(outerRadius);
+									} catch (Exception e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 							
 							
 								
