@@ -177,6 +177,8 @@ public class FrmDrawing extends JFrame {
 		JRadioButton rdbtnSelect = new JRadioButton("Select");
 		rdbtnSelect.setForeground(new Color(0, 0, 255));
 		rdbtnSelect.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		
 
 		rdbtnSelect.addItemListener(new ItemListener() {
 			@SuppressWarnings("deprecation")
@@ -443,6 +445,7 @@ public class FrmDrawing extends JFrame {
 		btnGroupShapes.add(tglbtnPoint);
 		btnGroupShapes.add(tglbtnRectangle);
 		btnGroupShapes.add(tglbtnCircle);
+		btnGroupShapes.add(tglbtnLine);
 		btnGroupShapes.add(tglbtnDonut);
 
 		rdbtnDraw.setSelected(true);

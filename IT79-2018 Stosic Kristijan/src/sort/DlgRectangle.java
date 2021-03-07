@@ -56,6 +56,7 @@ public class DlgRectangle extends JDialog {
 		setBounds(100, 100, 450, 350);
 		setModal(true);
 		setTitle("Add a Rectangle!");
+		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
