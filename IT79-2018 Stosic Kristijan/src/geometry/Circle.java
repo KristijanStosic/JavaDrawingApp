@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Circle extends SurfaceShape {
 
 	private Point center;
-	private int radius;
+	protected int radius;
 	
 	public Circle() {
 
@@ -48,7 +48,7 @@ public class Circle extends SurfaceShape {
 	@Override
 	public void fill(Graphics g) {
 		g.setColor(getInnerColor());
-		g.fillOval(this.center.getX() - radius + 1, this.center.getY() - radius + 1, radius*2 - 2, radius*2 - 2);
+		g.fillOval(this.center.getX() - radius + 1, this.center.getY() - radius + 1, radius * 2 - 2, radius * 2 - 2);
 	}
 
 	@Override
@@ -64,12 +64,10 @@ public class Circle extends SurfaceShape {
 			g.drawRect(this.center.getX() - 3, this.center.getY() - radius - 3, 6, 6);
 			g.drawRect(this.center.getX() - 3, this.center.getY() + radius - 3, 6, 6);
 		}
-			
-		
 	}
 	
 	public double area() {
-		return radius * radius * Math.PI;
+		return Math.round(radius * radius * Math.PI);
 	}
 	
 	public boolean contains(int x, int y) {
@@ -93,6 +91,15 @@ public class Circle extends SurfaceShape {
 		}
 	}
 	
+	public void selectCircle(Graphics g) {
+		g.setColor(Color.BLACK);
+		g.drawRect(this.center.getX() - 3, this.center.getY() - 3, 6, 6);
+		g.drawRect(this.center.getX() - radius - 3, this.center.getY() - 3, 6, 6);
+		g.drawRect(this.center.getX() + radius - 3, this.center.getY() - 3, 6, 6);
+		g.drawRect(this.center.getX() - 3, this.center.getY() - radius - 3, 6, 6);
+		g.drawRect(this.center.getX() - 3, this.center.getY() + radius - 3, 6, 6);
+	}
+	
 	public Point getCenter() {
 		return center;
 	}
@@ -109,8 +116,10 @@ public class Circle extends SurfaceShape {
 			throw new NumberFormatException("Radius has to be a value greater then 0!");
 		}
 	}
+	
+	@Override
 	public String toString() {
-		return "Center=" + center + ", radius=" + radius;
+		return "Circle: (" + this.center.getX() + ", " + this.center.getY() + "), " + "Radius=" + this.radius + " Area: " + area();
 	}
 
 

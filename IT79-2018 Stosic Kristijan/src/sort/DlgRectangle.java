@@ -1,19 +1,16 @@
 package sort;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import geometry.Point;
 import geometry.Rectangle;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
@@ -24,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class DlgRectangle extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -34,11 +32,8 @@ public class DlgRectangle extends JDialog {
 	private JButton btnConfirm;
 	private JButton btnCancel;
 	private Rectangle rec;
-	public  boolean isOk;
+	public boolean isOk;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			DlgRectangle dialog = new DlgRectangle();
@@ -49,9 +44,6 @@ public class DlgRectangle extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public DlgRectangle() {
 		setBounds(100, 100, 450, 350);
 		setModal(true);
@@ -61,10 +53,10 @@ public class DlgRectangle extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblXCoordinate = new JLabel("X coordinate:");
@@ -149,8 +141,8 @@ public class DlgRectangle extends JDialog {
 				btnConfirm.setFont(new Font("Rockwell", Font.PLAIN, 20));
 				btnConfirm.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-								isOk = true;
-								dispose();
+						isOk = true;
+						dispose();
 					}
 				});
 				btnConfirm.setActionCommand("OK");
@@ -168,30 +160,19 @@ public class DlgRectangle extends JDialog {
 			}
 			GroupLayout gl_buttonPane = new GroupLayout(buttonPane);
 			gl_buttonPane.setHorizontalGroup(
-				gl_buttonPane.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_buttonPane.createSequentialGroup()
-						.addGap(71)
-						.addComponent(btnConfirm)
-						.addGap(55)
-						.addComponent(btnCancel)
-						.addGap(104))
-			);
-			gl_buttonPane.setVerticalGroup(
-				gl_buttonPane.createParallelGroup(Alignment.LEADING)
-					.addGroup(Alignment.TRAILING, gl_buttonPane.createSequentialGroup()
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnConfirm)
-							.addComponent(btnCancel))
-						.addContainerGap())
-			);
+					gl_buttonPane.createParallelGroup(Alignment.LEADING).addGroup(gl_buttonPane.createSequentialGroup()
+							.addGap(71).addComponent(btnConfirm).addGap(55).addComponent(btnCancel).addGap(104)));
+			gl_buttonPane
+					.setVerticalGroup(
+							gl_buttonPane.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
+									gl_buttonPane.createSequentialGroup()
+											.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addGroup(gl_buttonPane.createParallelGroup(Alignment.BASELINE)
+													.addComponent(btnConfirm).addComponent(btnCancel))
+											.addContainerGap()));
 			buttonPane.setLayout(gl_buttonPane);
 		}
 	}
-
-	
-
-	
 
 	public Rectangle getRec() {
 		return rec;
@@ -200,8 +181,6 @@ public class DlgRectangle extends JDialog {
 	public void setRec(Rectangle rec) {
 		this.rec = rec;
 	}
-
-	
 
 	public JTextField getTxtCoordinateX() {
 		return txtCoordinateX;

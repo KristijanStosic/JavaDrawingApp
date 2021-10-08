@@ -133,7 +133,8 @@ public class Rectangle extends SurfaceShape {
 	}
 
 	public String toString() {
-		return "Upper left point=" + upperLeftPoint + ", width=" + width + ", height=" + height + " Area is =" + area();
+		return "Rectangle: (" + upperLeftPoint.getX() + ", " + upperLeftPoint.getY() + "), " + "Width=" + width
+				+ ",Height=" + height + " Area: " + area();
 	}
 
 	

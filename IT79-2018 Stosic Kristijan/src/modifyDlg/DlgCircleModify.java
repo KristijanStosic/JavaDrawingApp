@@ -35,10 +35,8 @@ public class DlgCircleModify extends JDialog {
 	private Circle circle;
 	private Color edgeColor = new Color(0, 0, 0);
 	private Color innerColor = new Color(255, 255, 255);
-	private JButton btnChooseEdgeColor;
-	private JButton btnChooseInnerColor;
-	private JTextField txtEdgeColor;
-	private JTextField txtInnerColor;
+	private JButton btnEdgeColor;
+	private JButton btnInnerColor;
 	private boolean isOk;
 
 	public static void main(String[] args) {
@@ -79,74 +77,73 @@ public class DlgCircleModify extends JDialog {
 		txtRadius = new JTextField();
 		txtRadius.setColumns(10);
 
-		btnChooseEdgeColor = new JButton("Choose edge color");
-		btnChooseEdgeColor.addActionListener(new ActionListener() {
+		btnEdgeColor = new JButton("Edge Color");
+		btnEdgeColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				edgeColor = JColorChooser.showDialog(null, "SELECT CIRCLE COLOR", edgeColor);
 				if (edgeColor != null) {
-					txtEdgeColor.setBackground(edgeColor);
+					btnEdgeColor.setBackground(edgeColor);
 				}
 			}
 		});
-		btnChooseEdgeColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnEdgeColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 
-		btnChooseInnerColor = new JButton("Choose inner color");
-		btnChooseInnerColor.addActionListener(new ActionListener() {
+		btnInnerColor = new JButton("Inner Color");
+		btnInnerColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				innerColor = JColorChooser.showDialog(null, "SELECT CIRCLE COLOR", innerColor);
 				if (innerColor != null) {
-					txtInnerColor.setBackground(innerColor);
+					btnInnerColor.setBackground(innerColor);
 				}
 			}
 		});
-		btnChooseInnerColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
-
-		txtEdgeColor = new JTextField();
-		txtEdgeColor.setEditable(false);
-		txtEdgeColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtEdgeColor.setColumns(10);
-
-		txtInnerColor = new JTextField();
-		txtInnerColor.setEditable(false);
-		txtInnerColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		txtInnerColor.setColumns(10);
+		btnInnerColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GroupLayout gl_pnlCenter = new GroupLayout(pnlCenter);
-		gl_pnlCenter.setHorizontalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlCenter
-				.createSequentialGroup()
-				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnlCenter.createSequentialGroup().addGap(142).addComponent(lblCircleModify))
-						.addGroup(gl_pnlCenter.createSequentialGroup().addContainerGap()
-								.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addComponent(lblCenterOfX)
-										.addComponent(lblCenterYCoordinate).addComponent(lblRadius)
-										.addComponent(btnChooseEdgeColor).addComponent(btnChooseInnerColor))
-								.addGap(88)
-								.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(txtInnerColor, 0, 0, Short.MAX_VALUE)
-										.addComponent(txtEdgeColor, 0, 0, Short.MAX_VALUE).addComponent(txtRadius)
-										.addComponent(txtYcoordinate)
-										.addComponent(txtXcoordinate, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))))
-				.addContainerGap(10, Short.MAX_VALUE)));
-		gl_pnlCenter.setVerticalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlCenter
-				.createSequentialGroup().addContainerGap().addComponent(lblCircleModify).addGap(18)
-				.addGroup(gl_pnlCenter
-						.createParallelGroup(Alignment.BASELINE).addComponent(lblCenterOfX).addComponent(txtXcoordinate,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(18)
-				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE).addComponent(lblCenterYCoordinate)
-						.addComponent(txtYcoordinate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-				.addGap(18)
-				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE).addComponent(lblRadius).addComponent(
-						txtRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(30)
-				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addComponent(btnChooseEdgeColor)
-						.addComponent(txtEdgeColor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-				.addGap(35)
-				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addComponent(btnChooseInnerColor)
-						.addComponent(txtInnerColor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE))
-				.addGap(32)));
+		gl_pnlCenter.setHorizontalGroup(
+			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCenter.createSequentialGroup()
+					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnInnerColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnEdgeColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_pnlCenter.createSequentialGroup()
+							.addGap(142)
+							.addComponent(lblCircleModify))
+						.addGroup(Alignment.LEADING, gl_pnlCenter.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblCenterOfX)
+								.addComponent(lblCenterYCoordinate)
+								.addComponent(lblRadius))
+							.addGap(106)
+							.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(txtRadius)
+								.addComponent(txtYcoordinate)
+								.addComponent(txtXcoordinate, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		gl_pnlCenter.setVerticalGroup(
+			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCenter.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblCircleModify)
+					.addGap(18)
+					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCenterOfX)
+						.addComponent(txtXcoordinate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblCenterYCoordinate)
+						.addComponent(txtYcoordinate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblRadius)
+						.addComponent(txtRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(30)
+					.addComponent(btnEdgeColor)
+					.addGap(35)
+					.addComponent(btnInnerColor)
+					.addGap(32))
+		);
 		pnlCenter.setLayout(gl_pnlCenter);
 		{
 			JPanel pnlSouth = new JPanel();
@@ -161,10 +158,12 @@ public class DlgCircleModify extends JDialog {
 									|| txtRadius.getText().trim().equals("")) {
 								JOptionPane.showMessageDialog(null, "Fields are empty!", "ERROR",
 										JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
 								return;
 							} else if (Integer.parseInt(txtRadius.getText()) < 1) {
 								JOptionPane.showMessageDialog(null, "Radius can't be less than 1!", "ERROR",
 										JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
 								return;
 							} else {
 								int x = Integer.parseInt(txtXcoordinate.getText());
@@ -182,7 +181,7 @@ public class DlgCircleModify extends JDialog {
 								circle.setColor(edgeColor);
 								circle.setInnerColor(innerColor);
 								isOk = true;
-								dispose();
+								setVisible(false);
 							}
 						} catch (NumberFormatException exc) {
 							JOptionPane.showMessageDialog(null, "Invalid data inserted!", "ERROR",
@@ -224,8 +223,8 @@ public class DlgCircleModify extends JDialog {
 		txtXcoordinate.setText(String.valueOf(circle.getCenter().getX()));
 		txtYcoordinate.setText(String.valueOf(circle.getCenter().getY()));
 		txtRadius.setText(String.valueOf(circle.getRadius()));
-		txtEdgeColor.setBackground(circle.getColor());
-		txtInnerColor.setBackground(circle.getInnerColor());
+		btnEdgeColor.setBackground(circle.getColor());
+		btnInnerColor.setBackground(circle.getInnerColor());
 		edgeColor = circle.getColor();
 		innerColor = circle.getInnerColor();
 	}
@@ -237,5 +236,9 @@ public class DlgCircleModify extends JDialog {
 		} else if (!x.matches(exp2) || !y.matches(exp2) || !radius.matches(exp2)) {
 			throw new NumberFormatException();
 		}
+	}
+
+	public boolean isOk() {
+		return isOk;
 	}
 }

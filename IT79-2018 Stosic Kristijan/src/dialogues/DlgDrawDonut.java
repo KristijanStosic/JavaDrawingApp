@@ -25,9 +25,6 @@ public class DlgDrawDonut extends JDialog {
 	private JTextField txtDonutRadius;
 	private JTextField txtDonutInnerRadius;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			DlgDrawDonut dialog = new DlgDrawDonut();
@@ -38,9 +35,6 @@ public class DlgDrawDonut extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public DlgDrawDonut() {
 		setBounds(100, 100, 350, 250);
 		setTitle("Draw Donut");
@@ -61,38 +55,26 @@ public class DlgDrawDonut extends JDialog {
 		txtDonutInnerRadius = new JTextField();
 		txtDonutInnerRadius.setColumns(10);
 		GroupLayout gl_pnlCenter = new GroupLayout(pnlCenter);
-		gl_pnlCenter.setHorizontalGroup(
-			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addGap(32)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblRadius)
-						.addComponent(lblInnerRadius))
-					.addPreferredGap(ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(txtDonutInnerRadius)
+		gl_pnlCenter.setHorizontalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlCenter
+				.createSequentialGroup().addGap(32)
+				.addGroup(gl_pnlCenter
+						.createParallelGroup(Alignment.LEADING).addComponent(lblRadius).addComponent(lblInnerRadius))
+				.addPreferredGap(ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING, false).addComponent(txtDonutInnerRadius)
 						.addComponent(txtDonutRadius, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-					.addContainerGap(25, Short.MAX_VALUE))
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addGap(134)
-					.addComponent(lblDonut)
-					.addContainerGap(152, Short.MAX_VALUE))
-		);
-		gl_pnlCenter.setVerticalGroup(
-			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblDonut)
-					.addGap(26)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRadius)
-						.addComponent(txtDonutRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(30)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblInnerRadius)
-						.addComponent(txtDonutInnerRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(45, Short.MAX_VALUE))
-		);
+				.addContainerGap(25, Short.MAX_VALUE))
+				.addGroup(gl_pnlCenter.createSequentialGroup().addGap(134).addComponent(lblDonut).addContainerGap(152,
+						Short.MAX_VALUE)));
+		gl_pnlCenter.setVerticalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlCenter
+				.createSequentialGroup().addContainerGap().addComponent(lblDonut).addGap(26)
+				.addGroup(gl_pnlCenter
+						.createParallelGroup(Alignment.BASELINE).addComponent(lblRadius).addComponent(txtDonutRadius,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGap(30)
+				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE).addComponent(lblInnerRadius)
+						.addComponent(txtDonutInnerRadius, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+				.addContainerGap(45, Short.MAX_VALUE)));
 		pnlCenter.setLayout(gl_pnlCenter);
 		{
 			JPanel pnlSouth = new JPanel();
@@ -101,43 +83,49 @@ public class DlgDrawDonut extends JDialog {
 				btnDraw = new JButton("Draw");
 				btnDraw.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(txtDonutRadius.getText().trim().equals("") || txtDonutInnerRadius.getText().trim().equals("")){
-							getToolkit().beep();
-							JOptionPane.showMessageDialog(null, "Some fields are empty!", "Error", JOptionPane.ERROR_MESSAGE, null);
-							isOk = false;
-							return;
-						}
 						try {
-							validate(txtDonutRadius.getText(),txtDonutInnerRadius.getText());
-						} catch (NumberFormatException exc) {
-							getToolkit().beep();
-							JOptionPane.showMessageDialog(null, "Invalid data type inserted!", "Error", JOptionPane.ERROR_MESSAGE, null);
-							isOk = false;
-							return;
-						}
-						
-						if(Integer.parseInt(txtDonutRadius.getText()) < 1 || Integer.parseInt(txtDonutInnerRadius.getText()) <1){
-							getToolkit().beep();
-							JOptionPane.showMessageDialog(null, "Radius or inner radius can't be less than 1", "Error", JOptionPane.ERROR_MESSAGE, null);
-							isOk = false;
-							return;
-						}else if(Integer.parseInt(txtDonutRadius.getText()) < Integer.parseInt(txtDonutInnerRadius.getText())){
-							getToolkit().beep();
-							JOptionPane.showMessageDialog(null, "Radius must be greater than Inner Radius!", "Error", JOptionPane.ERROR_MESSAGE, null);
-							isOk = false;
-							return;
-						}else if(Integer.parseInt(txtDonutRadius.getText()) == Integer.parseInt(txtDonutInnerRadius.getText())){
+							if (txtDonutRadius.getText().trim().equals("")
+									|| txtDonutInnerRadius.getText().trim().equals("")) {
 								getToolkit().beep();
-								JOptionPane.showMessageDialog(null, "Radius can't be equal to Inner Radius!", "Error", JOptionPane.ERROR_MESSAGE, null);
+								JOptionPane.showMessageDialog(null, "Some fields are empty!", "Error",
+										JOptionPane.ERROR_MESSAGE, null);
 								isOk = false;
 								return;
-						}else{
-							isOk = true;
-							dispose();
+							} else if (Integer.parseInt(txtDonutRadius.getText()) < 1
+									|| Integer.parseInt(txtDonutInnerRadius.getText()) < 1) {
+								getToolkit().beep();
+								JOptionPane.showMessageDialog(null, "Radius or inner radius can't be less than 1",
+										"Error", JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
+								return;
+							} else if (Integer.parseInt(txtDonutRadius.getText()) < Integer
+									.parseInt(txtDonutInnerRadius.getText())) {
+								getToolkit().beep();
+								JOptionPane.showMessageDialog(null, "Radius must be greater than Inner Radius!",
+										"Error", JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
+								return;
+							} else if (Integer.parseInt(txtDonutRadius.getText()) == Integer
+									.parseInt(txtDonutInnerRadius.getText())) {
+								getToolkit().beep();
+								JOptionPane.showMessageDialog(null, "Radius can't be equal to Inner Radius!", "Error",
+										JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
+								return;
+							} else {
+								isOk = true;
+								setVisible(false);
+							}
+							validate(txtDonutRadius.getText(), txtDonutInnerRadius.getText());
+						} catch (NumberFormatException exc) {
+							getToolkit().beep();
+							JOptionPane.showMessageDialog(null, "Invalid data type inserted!", "Error",
+									JOptionPane.ERROR_MESSAGE, null);
+							isOk = false;
+							return;
 						}
 					}
-				}
-					);
+				});
 				btnDraw.setFont(new Font("Tahoma", Font.PLAIN, 15));
 				btnDraw.setActionCommand("OK");
 				getRootPane().setDefaultButton(btnDraw);
@@ -146,6 +134,7 @@ public class DlgDrawDonut extends JDialog {
 				btnCancel = new JButton("Cancel");
 				btnCancel.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						isOk = false;
 						dispose();
 					}
 				});
@@ -154,31 +143,26 @@ public class DlgDrawDonut extends JDialog {
 			}
 			GroupLayout gl_pnlSouth = new GroupLayout(pnlSouth);
 			gl_pnlSouth.setHorizontalGroup(
-				gl_pnlSouth.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_pnlSouth.createSequentialGroup()
-						.addGap(88)
-						.addComponent(btnDraw)
-						.addGap(18)
-						.addComponent(btnCancel)
-						.addGap(98))
-			);
-			gl_pnlSouth.setVerticalGroup(
-				gl_pnlSouth.createParallelGroup(Alignment.LEADING)
-					.addGroup(Alignment.TRAILING, gl_pnlSouth.createSequentialGroup()
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_pnlSouth.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnDraw)
-							.addComponent(btnCancel))
-						.addContainerGap())
-			);
+					gl_pnlSouth.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlSouth.createSequentialGroup()
+							.addGap(88).addComponent(btnDraw).addGap(18).addComponent(btnCancel).addGap(98)));
+			gl_pnlSouth
+					.setVerticalGroup(
+							gl_pnlSouth.createParallelGroup(Alignment.LEADING)
+									.addGroup(Alignment.TRAILING,
+											gl_pnlSouth.createSequentialGroup()
+													.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+													.addGroup(gl_pnlSouth.createParallelGroup(Alignment.BASELINE)
+															.addComponent(btnDraw).addComponent(btnCancel))
+													.addContainerGap()));
 			pnlSouth.setLayout(gl_pnlSouth);
 		}
 	}
+
 	public void validate(String radius, String innerRadius) {
 		String supp = "^(([+-])?([1-9]{1})([0-9]+)?)$";
-        if(!radius.matches(supp)|| !innerRadius.matches(supp)){  
-        	throw new NumberFormatException();
-        }
+		if (!radius.matches(supp) || !innerRadius.matches(supp)) {
+			throw new NumberFormatException();
+		}
 	}
 
 	public boolean isOk() {

@@ -29,16 +29,14 @@ public class DlgPointModify extends JDialog {
 	private JLabel lblModifyPoint;
 	private JLabel lblXCoordinate;
 	private JLabel lblYCoordinate;
-	private JButton btnChooseColor;
+	private JButton btnColor;
 	private JTextField txtCX;
 	private JTextField txtCY;
-	private JTextField txtColorPoint;
 
 	private Point point;
-	private Color colorPoint;
-	
-	
-	
+	private Color color = new Color(0, 0, 0);
+	private boolean isOk;
+
 	public static void main(String[] args) {
 		try {
 			DlgPointModify dialog = new DlgPointModify();
@@ -49,9 +47,6 @@ public class DlgPointModify extends JDialog {
 		}
 	}
 
-	/**
-	 * Create the dialog.
-	 */
 	public DlgPointModify() {
 		setBounds(100, 100, 350, 270);
 		setTitle("Modify Point");
@@ -67,65 +62,44 @@ public class DlgPointModify extends JDialog {
 		lblXCoordinate.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblYCoordinate = new JLabel("Y coordinate:");
 		lblYCoordinate.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnChooseColor = new JButton("Choose color");
-		btnChooseColor.addActionListener(new ActionListener() {
+		btnColor = new JButton("Color");
+		btnColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				colorPoint = JColorChooser.showDialog(null, "Choose POINT color", point.getColor());
-				if(colorPoint==null){
-					colorPoint=point.getColor();
+				color = JColorChooser.showDialog(null, "Choose POINT color", color);
+				if (color != null) {
+					btnColor.setBackground(color);
 				}
-				txtColorPoint.setBackground(colorPoint);
 			}
 		});
-		btnChooseColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnColor.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		txtCX = new JTextField();
 		txtCX.setColumns(10);
 		txtCY = new JTextField();
 		txtCY.setColumns(10);
-		txtColorPoint = new JTextField();
-		txtColorPoint.setEditable(false);
-		txtColorPoint.setColumns(10);
 		GroupLayout gl_pnlCenter = new GroupLayout(pnlCenter);
-		gl_pnlCenter.setHorizontalGroup(
-			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addGap(100)
-					.addComponent(lblModifyPoint)
-					.addContainerGap(135, Short.MAX_VALUE))
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addGap(22)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnlCenter.createParallelGroup(Alignment.TRAILING)
-							.addComponent(lblYCoordinate)
-							.addComponent(lblXCoordinate))
-						.addComponent(btnChooseColor))
-					.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtColorPoint)
-						.addGroup(Alignment.TRAILING, gl_pnlCenter.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(txtCY)
-							.addComponent(txtCX, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)))
-					.addContainerGap(32, Short.MAX_VALUE))
-		);
-		gl_pnlCenter.setVerticalGroup(
-			gl_pnlCenter.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCenter.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblModifyPoint)
-					.addGap(18)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblXCoordinate)
-						.addComponent(txtCX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblYCoordinate)
-						.addComponent(txtCY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-					.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnChooseColor)
-						.addComponent(txtColorPoint, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-					.addGap(24))
-		);
+		gl_pnlCenter.setHorizontalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCenter.createSequentialGroup().addGap(100).addComponent(lblModifyPoint)
+						.addContainerGap(125, Short.MAX_VALUE))
+				.addGroup(gl_pnlCenter.createSequentialGroup().addGap(22).addGroup(gl_pnlCenter
+						.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+						.addGroup(gl_pnlCenter.createSequentialGroup()
+								.addGroup(gl_pnlCenter.createParallelGroup(Alignment.TRAILING)
+										.addComponent(lblYCoordinate).addComponent(lblXCoordinate))
+								.addPreferredGap(ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+								.addGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING, false).addComponent(txtCY)
+										.addComponent(txtCX, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE))))
+						.addGap(27)));
+		gl_pnlCenter.setVerticalGroup(gl_pnlCenter.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlCenter
+				.createSequentialGroup().addContainerGap().addComponent(lblModifyPoint).addGap(18)
+				.addGroup(gl_pnlCenter
+						.createParallelGroup(Alignment.BASELINE).addComponent(lblXCoordinate).addComponent(txtCX,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGap(18)
+				.addGroup(gl_pnlCenter.createParallelGroup(Alignment.BASELINE).addComponent(lblYCoordinate)
+						.addComponent(txtCY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+				.addGap(10).addComponent(btnColor).addContainerGap(24, Short.MAX_VALUE)));
 		pnlCenter.setLayout(gl_pnlCenter);
 		{
 			JPanel pnlSouth = new JPanel();
@@ -134,19 +108,26 @@ public class DlgPointModify extends JDialog {
 				btnModify = new JButton("Modify");
 				btnModify.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if(txtCX.getText().trim().equals("") || txtCY.getText().trim().equals("")){
-							JOptionPane.showMessageDialog(null, "Fields are empty! Insert values!", "ERROR", JOptionPane.ERROR_MESSAGE, null);
-							return;
-						}
 						try {
-							int coordinateX = Integer.parseInt(txtCX.getText());
-							int coordinateY = Integer.parseInt(txtCY.getText());
-							point.setX(coordinateX);
-							point.setY(coordinateY);
-							point.setColor(colorPoint);
-							dispose();
+							if (txtCX.getText().trim().equals("") || txtCY.getText().trim().equals("")) {
+								JOptionPane.showMessageDialog(null, "Fields are empty! Insert values!", "ERROR",
+										JOptionPane.ERROR_MESSAGE, null);
+								isOk = false;
+								return;
+							} else {
+								int coordinateX = Integer.parseInt(txtCX.getText());
+								int coordinateY = Integer.parseInt(txtCY.getText());
+								point.setX(coordinateX);
+								point.setY(coordinateY);
+								point.setColor(color);
+								isOk = true;
+								setVisible(false);
+							}
+
 						} catch (NumberFormatException exc) {
-							JOptionPane.showMessageDialog(null, "Incorrect data type inserted, please insert data again!", "ERROR", JOptionPane.ERROR_MESSAGE, null);
+							JOptionPane.showMessageDialog(null,
+									"Incorrect data type inserted, please insert data again!", "ERROR",
+									JOptionPane.ERROR_MESSAGE, null);
 						}
 					}
 				});
@@ -166,31 +147,29 @@ public class DlgPointModify extends JDialog {
 			}
 			GroupLayout gl_pnlSouth = new GroupLayout(pnlSouth);
 			gl_pnlSouth.setHorizontalGroup(
-				gl_pnlSouth.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_pnlSouth.createSequentialGroup()
-						.addGap(76)
-						.addComponent(btnModify)
-						.addGap(40)
-						.addComponent(btnCancel)
-						.addGap(216))
-			);
-			gl_pnlSouth.setVerticalGroup(
-				gl_pnlSouth.createParallelGroup(Alignment.TRAILING)
-					.addGroup(gl_pnlSouth.createSequentialGroup()
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(gl_pnlSouth.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnModify)
-							.addComponent(btnCancel))
-						.addContainerGap())
-			);
+					gl_pnlSouth.createParallelGroup(Alignment.LEADING).addGroup(gl_pnlSouth.createSequentialGroup()
+							.addGap(76).addComponent(btnModify).addGap(40).addComponent(btnCancel).addGap(216)));
+			gl_pnlSouth
+					.setVerticalGroup(
+							gl_pnlSouth.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_pnlSouth.createSequentialGroup()
+											.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addGroup(gl_pnlSouth.createParallelGroup(Alignment.BASELINE)
+													.addComponent(btnModify).addComponent(btnCancel))
+											.addContainerGap()));
 			pnlSouth.setLayout(gl_pnlSouth);
 		}
 	}
+
 	public void fillAll(Point pointModify) {
 		this.point = pointModify;
 		txtCX.setText(String.valueOf(point.getX()));
 		txtCY.setText(String.valueOf(point.getY()));
-		colorPoint = point.getColor();
-		txtColorPoint.setBackground(colorPoint);
-		}
+		color = point.getColor();
+		btnColor.setBackground(color);
+	}
+
+	public boolean isOk() {
+		return isOk;
+	}
 }

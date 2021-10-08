@@ -3,6 +3,7 @@ package geometry;
 import java.awt.Color;
 import java.awt.Graphics;
 
+@SuppressWarnings("rawtypes")
 public abstract class Shape implements Moveable, Comparable {
 
 	private boolean selected;

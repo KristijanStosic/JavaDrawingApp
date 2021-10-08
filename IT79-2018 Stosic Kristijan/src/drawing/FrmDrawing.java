@@ -1,14 +1,12 @@
 package drawing;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -21,7 +19,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.BevelBorder;
@@ -44,23 +41,21 @@ import modifyDlg.DlgLineModify;
 import modifyDlg.DlgPointModify;
 import modifyDlg.DlgRectangleModify;
 
-import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class FrmDrawing extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtEdgeColor;
-	private JTextField txtInnerColor;
 	PnlDrawing pnlDrawing = new PnlDrawing();
-	private Color edgeColor = Color.black;
-	private Color innerColor = Color.white;
-	private final ButtonGroup btnGroupShapes = new ButtonGroup();
-	private final ButtonGroup btnGroupMode = new ButtonGroup();
+	private Color edgeColor = new Color(0, 0, 0);
+	private Color innerColor = new Color(255, 255, 255);
+	private final ButtonGroup btnGroup = new ButtonGroup();
 	private int lastSelected = -1;
-	private Point click1;
+	private Point startPoint, endPoint;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,9 +70,6 @@ public class FrmDrawing extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public FrmDrawing() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1120, 650);
@@ -109,21 +101,17 @@ public class FrmDrawing extends JFrame {
 						new BevelBorder(BevelBorder.LOWERED, null, null, null, null)),
 				"Edge color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
-		JPanel panelInnerColor = new JPanel();
-		panelInnerColor.setBorder(new TitledBorder(
-				new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
-						new BevelBorder(BevelBorder.LOWERED, null, null, null, null)),
-				"Inner color", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
-
 		JPanel panelMode = new JPanel();
 		panelMode.setBorder(new TitledBorder(
 				new CompoundBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null),
 						new BevelBorder(BevelBorder.LOWERED, null, null, null, null)),
 				"Mode", TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLACK));
-		
+
 		JLabel lblMouseCursor = new JLabel("Mouse Position: ");
 		lblMouseCursor.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblMouseCursor.setForeground(Color.WHITE);
+		
+		JPanel pnlString = new JPanel();
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -133,19 +121,17 @@ public class FrmDrawing extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(panelShapes, GroupLayout.PREFERRED_SIZE, 583, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
 							.addComponent(panelActions, GroupLayout.PREFERRED_SIZE, 463, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(8)
 							.addComponent(pnlDrawing, GroupLayout.PREFERRED_SIZE, 827, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(4)
-									.addComponent(panelInnerColor, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE))
-								.addComponent(panelEdgeColor, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-								.addComponent(panelMode, GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-								.addComponent(lblMouseCursor))))
+								.addComponent(pnlString, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+								.addComponent(lblMouseCursor)
+								.addComponent(panelMode, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+								.addComponent(panelEdgeColor, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -159,14 +145,30 @@ public class FrmDrawing extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(panelEdgeColor, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE)
-							.addGap(22)
-							.addComponent(panelInnerColor, GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-							.addGap(18)
-							.addComponent(panelMode, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
-						.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblMouseCursor, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+							.addGap(30)
+							.addComponent(panelMode, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+							.addGap(31)
+							.addComponent(lblMouseCursor)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(pnlString, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE))
+						.addComponent(pnlDrawing, GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE))
+					.addGap(20))
 		);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_pnlString = new GroupLayout(pnlString);
+		gl_pnlString.setHorizontalGroup(
+			gl_pnlString.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+		);
+		gl_pnlString.setVerticalGroup(
+			gl_pnlString.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
+		);
+		
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		pnlString.setLayout(gl_pnlString);
 		GroupLayout gl_pnlDrawing = new GroupLayout(pnlDrawing);
 		gl_pnlDrawing.setHorizontalGroup(
 				gl_pnlDrawing.createParallelGroup(Alignment.LEADING).addGap(0, 10, Short.MAX_VALUE));
@@ -174,116 +176,58 @@ public class FrmDrawing extends JFrame {
 				.setVerticalGroup(gl_pnlDrawing.createParallelGroup(Alignment.LEADING).addGap(0, 10, Short.MAX_VALUE));
 		pnlDrawing.setLayout(gl_pnlDrawing);
 
-		JRadioButton rdbtnSelect = new JRadioButton("Select");
-		rdbtnSelect.setForeground(new Color(0, 0, 255));
-		rdbtnSelect.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		
-		
-
-		rdbtnSelect.addItemListener(new ItemListener() {
-			@SuppressWarnings("deprecation")
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					pnlDrawing.setCursor(new Cursor(HAND_CURSOR));
-				} else {
-					pnlDrawing.setCursor(new Cursor(DEFAULT_CURSOR));
-				}
-			}
-		});
-
-		JRadioButton rdbtnDraw = new JRadioButton("Draw");
-		rdbtnDraw.setForeground(new Color(255, 0, 0));
-		rdbtnDraw.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		JToggleButton tglBtnSelect = new JToggleButton("Select");
 		GroupLayout gl_panelMode = new GroupLayout(panelMode);
 		gl_panelMode.setHorizontalGroup(gl_panelMode.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelMode.createSequentialGroup()
-						.addGap(64).addGroup(gl_panelMode.createParallelGroup(Alignment.LEADING)
-								.addComponent(rdbtnSelect).addComponent(rdbtnDraw))
-						.addContainerGap(66, Short.MAX_VALUE)));
-		gl_panelMode.setVerticalGroup(gl_panelMode.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
-				gl_panelMode.createSequentialGroup().addGap(15).addComponent(rdbtnDraw).addGap(18)
-						.addComponent(rdbtnSelect).addContainerGap(13, Short.MAX_VALUE)));
+				.addGroup(gl_panelMode.createSequentialGroup().addContainerGap()
+						.addComponent(tglBtnSelect, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE).addContainerGap()));
+		gl_panelMode.setVerticalGroup(gl_panelMode.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelMode.createSequentialGroup().addContainerGap()
+						.addComponent(tglBtnSelect, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE).addContainerGap()));
 		panelMode.setLayout(gl_panelMode);
 
-		btnGroupMode.add(rdbtnSelect);
-		btnGroupMode.add(rdbtnDraw);
-
-		JButton btnChooselnnerColor = new JButton("InnerColor");
-		btnChooselnnerColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
-		btnChooselnnerColor.setToolTipText("Inner Color");
-		btnChooselnnerColor.addActionListener(new ActionListener() {
+		JButton btnEdgeColor = new JButton("EdgeColor");
+		btnEdgeColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
+		btnEdgeColor.setToolTipText("Edge color");
+		btnEdgeColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				innerColor = JColorChooser.showDialog(null, "FILL COLOR", innerColor);
-				if (innerColor == null) {
-					innerColor = Color.WHITE;
-					txtInnerColor.setBackground(Color.WHITE);
-				} else {
-					txtInnerColor.setBackground(innerColor);
+				Color temp = JColorChooser.showDialog(null, "BACKGROUND COLOR", edgeColor);
+				if (temp != null) {
+					edgeColor = temp;
+					btnEdgeColor.setBackground(edgeColor);
 				}
 			}
 		});
-		btnChooselnnerColor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnEdgeColor.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		txtInnerColor = new JTextField();
-		txtInnerColor.setEditable(false);
-		txtInnerColor.setColumns(10);
-		GroupLayout gl_panelInnerColor = new GroupLayout(panelInnerColor);
-		gl_panelInnerColor.setHorizontalGroup(gl_panelInnerColor.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panelInnerColor.createSequentialGroup().addContainerGap()
-						.addGroup(gl_panelInnerColor.createParallelGroup(Alignment.TRAILING)
-								.addComponent(txtInnerColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 174,
-										Short.MAX_VALUE)
-								.addComponent(btnChooselnnerColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 174,
-										Short.MAX_VALUE))
-						.addContainerGap()));
-		gl_panelInnerColor
-				.setVerticalGroup(gl_panelInnerColor.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panelInnerColor.createSequentialGroup().addContainerGap()
-								.addComponent(btnChooselnnerColor, GroupLayout.PREFERRED_SIZE, 46,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-								.addComponent(txtInnerColor, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap()));
-		panelInnerColor.setLayout(gl_panelInnerColor);
-
-		JButton btnChooseEdgeColor = new JButton("EdgeColor");
-		btnChooseEdgeColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
-		btnChooseEdgeColor.setToolTipText("Edge color");
-		btnChooseEdgeColor.addActionListener(new ActionListener() {
+		JButton btnInnerColor = new JButton("InnerColor");
+		btnInnerColor.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/paint-palette.png")));
+		btnInnerColor.setToolTipText("Inner Color");
+		btnInnerColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				edgeColor = JColorChooser.showDialog(null, "BACKGROUND COLOR", edgeColor);
-				if (edgeColor == null) {
-					edgeColor = Color.BLACK;
-					txtEdgeColor.setBackground(Color.BLACK);
-				} else {
-					txtEdgeColor.setBackground(edgeColor);
+				Color temp = JColorChooser.showDialog(null, "FILL COLOR", innerColor);
+				if (temp != null) {
+					innerColor = temp;
+					btnInnerColor.setBackground(innerColor);
 				}
-
 			}
 		});
-		btnChooseEdgeColor.setFont(new Font("Tahoma", Font.BOLD, 15));
-
-		txtEdgeColor = new JTextField();
-		txtEdgeColor.setEditable(false);
-		txtEdgeColor.setBackground(Color.RED);
-		txtEdgeColor.setColumns(10);
+		btnInnerColor.setFont(new Font("Tahoma", Font.BOLD, 15));
 		GroupLayout gl_panelEdgeColor = new GroupLayout(panelEdgeColor);
 		gl_panelEdgeColor.setHorizontalGroup(gl_panelEdgeColor.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_panelEdgeColor.createSequentialGroup().addContainerGap()
 						.addGroup(gl_panelEdgeColor.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnChooseEdgeColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 154,
+								.addComponent(btnInnerColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 193,
 										Short.MAX_VALUE)
-								.addComponent(txtEdgeColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 174,
+								.addComponent(btnEdgeColor, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 193,
 										Short.MAX_VALUE))
 						.addContainerGap()));
-		gl_panelEdgeColor
-				.setVerticalGroup(gl_panelEdgeColor.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panelEdgeColor.createSequentialGroup().addContainerGap()
-								.addComponent(btnChooseEdgeColor, GroupLayout.PREFERRED_SIZE, 50,
-										GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-								.addComponent(txtEdgeColor, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap()));
+		gl_panelEdgeColor.setVerticalGroup(gl_panelEdgeColor.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelEdgeColor.createSequentialGroup().addContainerGap()
+						.addComponent(btnEdgeColor, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(btnInnerColor, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		panelEdgeColor.setLayout(gl_panelEdgeColor);
 
 		JButton btnModify = new JButton("");
@@ -365,17 +309,14 @@ public class FrmDrawing extends JFrame {
 			}
 		});
 		GroupLayout gl_panelActions = new GroupLayout(panelActions);
-		gl_panelActions
-				.setHorizontalGroup(
-						gl_panelActions.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelActions.createSequentialGroup().addContainerGap()
-										.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 124,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnDeleteAll,
-												GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)));
+		gl_panelActions.setHorizontalGroup(gl_panelActions.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelActions.createSequentialGroup().addContainerGap()
+						.addComponent(btnModify, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(btnDeleteAll, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+						.addGap(18)));
 		gl_panelActions.setVerticalGroup(gl_panelActions.createParallelGroup(Alignment.LEADING)
 				.addComponent(btnModify, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
 				.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
@@ -388,7 +329,8 @@ public class FrmDrawing extends JFrame {
 		tglbtnPoint.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		JToggleButton tglbtnRectangle = new JToggleButton("");
-		tglbtnRectangle.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/rectangular-geometrical-shape-outline.png")));
+		tglbtnRectangle.setIcon(
+				new ImageIcon(FrmDrawing.class.getResource("/images/rectangular-geometrical-shape-outline.png")));
 		tglbtnRectangle.setToolTipText("Rectangle");
 		tglbtnRectangle.setFont(new Font("Tahoma", Font.BOLD, 15));
 
@@ -406,66 +348,57 @@ public class FrmDrawing extends JFrame {
 		tglbtnLine.setIcon(new ImageIcon(FrmDrawing.class.getResource("/images/diagonal-line.png")));
 		tglbtnLine.setToolTipText("Line");
 		tglbtnLine.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btnGroupShapes.add(tglbtnLine);
 		GroupLayout gl_panelShapes = new GroupLayout(panelShapes);
-		gl_panelShapes
-				.setHorizontalGroup(
-						gl_panelShapes.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panelShapes.createSequentialGroup().addContainerGap()
-										.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 90,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(tglbtnLine, GroupLayout.PREFERRED_SIZE, 85,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 114,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(tglbtnCircle, GroupLayout.PREFERRED_SIZE, 94,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(tglbtnDonut, GroupLayout.PREFERRED_SIZE, 109,
-												GroupLayout.PREFERRED_SIZE)
-										.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		gl_panelShapes
-				.setVerticalGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING).addGroup(gl_panelShapes
-						.createSequentialGroup().addGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING)
-								.addComponent(tglbtnDonut, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-								.addGroup(gl_panelShapes.createParallelGroup(Alignment.BASELINE)
-										.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 47,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(tglbtnLine, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-										.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 47,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(tglbtnCircle, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)))
-						.addGap(268)));
+		gl_panelShapes.setHorizontalGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelShapes.createSequentialGroup().addContainerGap()
+						.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(tglbtnLine, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE).addGap(18)
+						.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addComponent(tglbtnCircle, GroupLayout.PREFERRED_SIZE, 94, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(tglbtnDonut, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		gl_panelShapes.setVerticalGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING).addGroup(gl_panelShapes
+				.createSequentialGroup()
+				.addGroup(gl_panelShapes.createParallelGroup(Alignment.LEADING)
+						.addComponent(tglbtnDonut, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+						.addGroup(gl_panelShapes.createParallelGroup(Alignment.BASELINE)
+								.addComponent(tglbtnPoint, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tglbtnLine, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+								.addComponent(tglbtnRectangle, GroupLayout.PREFERRED_SIZE, 47,
+										GroupLayout.PREFERRED_SIZE)
+								.addComponent(tglbtnCircle, GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)))
+				.addGap(268)));
 		panelShapes.setLayout(gl_panelShapes);
 		contentPane.setLayout(gl_contentPane);
 
-		btnGroupShapes.add(tglbtnPoint);
-		btnGroupShapes.add(tglbtnRectangle);
-		btnGroupShapes.add(tglbtnCircle);
-		btnGroupShapes.add(tglbtnLine);
-		btnGroupShapes.add(tglbtnDonut);
-
-		rdbtnDraw.setSelected(true);
+		btnGroup.add(tglbtnPoint);
+		btnGroup.add(tglbtnRectangle);
+		btnGroup.add(tglbtnCircle);
+		btnGroup.add(tglbtnLine);
+		btnGroup.add(tglbtnDonut);
+		btnGroup.add(tglbtnLine);
+		btnGroup.add(tglBtnSelect);
 
 		pnlDrawing.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent e) {
-				lblMouseCursor.setText("Mouse position: " + Integer.toString(e.getX()) + ", " + Integer.toString(e.getY()));
+				lblMouseCursor
+						.setText("Mouse position: " + Integer.toString(e.getX()) + ", " + Integer.toString(e.getY()));
 			}
 		});
-		
+
 		pnlDrawing.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				Point mouseClick1 = new Point(e.getX(), e.getY());
+				Point center = new Point(e.getX(), e.getY());
 				for (int i = 0; i < pnlDrawing.getShapes().size(); i++) {
 					lastSelected = -1;
 					pnlDrawing.getShapes().get(i).setSelected(false);
 					pnlDrawing.repaint();
 				}
-				if (rdbtnSelect.isSelected()) {
+				if (tglBtnSelect.isSelected()) {
 					for (int i = 0; i < pnlDrawing.getShapes().size(); i++) {
 						if (pnlDrawing.getShapes().get(i).contains(e.getX(), e.getY())) {
 							lastSelected = i;
@@ -479,48 +412,53 @@ public class FrmDrawing extends JFrame {
 						Point p = new Point(e.getX(), e.getY());
 						p.setColor(edgeColor);
 						pnlDrawing.getShapes().add(p);
+						textArea.append(p.toString() + "\n");
 					} else if (tglbtnLine.isSelected()) {
-						if (click1 == null) {
-							click1 = new Point(e.getX(), e.getY());
+						if (startPoint == null) {
+							startPoint = new Point(e.getX(), e.getY());
 							return;
 						}
-						Point mouseClick2 = new Point(e.getX(), e.getY());
-						Line l = new Line(click1, mouseClick2, false);
+						endPoint = new Point(e.getX(), e.getY());
+						Line l = new Line(startPoint, endPoint, false);
 						l.setColor(edgeColor);
 						pnlDrawing.getShapes().add(l);
-						click1 = null;
+						textArea.append(l.toString() + "\n");
+						startPoint = null;
 					} else if (tglbtnRectangle.isSelected()) {
 						DlgDrawRectangle drawRectangle = new DlgDrawRectangle();
 						drawRectangle.setVisible(true);
 
 						if (drawRectangle.isOk()) {
-							Rectangle r = new Rectangle(mouseClick1,
+							Rectangle r = new Rectangle(center,
 									Integer.parseInt(drawRectangle.getTxtHeightRectangle().getText()),
 									Integer.parseInt(drawRectangle.getTxtWidthRectangle().getText()));
 							r.setColor(edgeColor);
 							r.setInnerColor(innerColor);
 							pnlDrawing.getShapes().add(r);
+							textArea.append(r.toString() + "\n");
 						}
 					} else if (tglbtnCircle.isSelected()) {
 						DlgDrawCircle drawCircle = new DlgDrawCircle();
 						drawCircle.setVisible(true);
 
 						if (drawCircle.isOk()) {
-							Circle c = new Circle(mouseClick1, Integer.parseInt(drawCircle.getTxtRadius().getText()));
+							Circle c = new Circle(center, Integer.parseInt(drawCircle.getTxtRadius().getText()));
 							c.setColor(edgeColor);
 							c.setInnerColor(innerColor);
 							pnlDrawing.getShapes().add(c);
+							textArea.append(c.toString() + "\n");
 						}
 					} else if (tglbtnDonut.isSelected()) {
 						DlgDrawDonut drawDonut = new DlgDrawDonut();
 						drawDonut.setVisible(true);
 
 						if (drawDonut.isOk()) {
-							Donut d = new Donut(mouseClick1, Integer.parseInt(drawDonut.getTxtDonutRadius().getText()),
+							Donut d = new Donut(center, Integer.parseInt(drawDonut.getTxtDonutRadius().getText()),
 									Integer.parseInt(drawDonut.getTxtDonutInnerRadius().getText()));
 							d.setColor(edgeColor);
 							d.setInnerColor(innerColor);
 							pnlDrawing.getShapes().add(d);
+							textArea.append(d.toString() + "\n");
 						}
 					}
 				}
